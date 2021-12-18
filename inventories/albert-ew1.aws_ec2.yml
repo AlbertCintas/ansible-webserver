@@ -14,7 +14,7 @@ strict_permissions: False
 
 # Set hostname from EC2 Name tag
 hostnames:
-  - tag:Name
+  - ip-address
 
 # Add hosts to tag_Name_Value groups for each Name/Value tag pair
 keyed_groups:
