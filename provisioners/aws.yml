@@ -7,8 +7,8 @@
   vars:
     aws_region: eu-west-1 # Ireland
     aws_ec2_ami: ami-0c0a42948ea1b4f44 # Ubuntu 20.04 LTS
-    aws_access_key: {{ AWS_ACCESS_KEY_ID }}
-    aws_secret_key: {{ AWS_SECRET_ACCESS_KEY }}
+    aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+    aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
 
     # Definition of EC2 instances
     instances:
