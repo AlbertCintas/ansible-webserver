@@ -7,6 +7,8 @@
   vars:
     aws_region: eu-west-1 # Ireland
     aws_ec2_ami: ami-0c0a42948ea1b4f44 # Ubuntu 20.04 LTS
+    aws_access_key: {{ AWS_ACCESS_KEY_ID }}
+    aws_secret_key: {{ AWS_SECRET_ACCESS_KEY }}
 
     # Definition of EC2 instances
     instances:
@@ -47,6 +49,8 @@
         rules: "{{ item.rules }}"
         rules_egress: "{{ item.rules_egress }}"
         region: "{{ aws_region }}"
+        aws_access_key: "{{ item.aws_access_key }}"
+        aws_secret_key: "{{ item.aws_secret_key }}"
       with_items: "{{ security_groups }}"
 
     - name: Provision EC2 instances.
@@ -64,6 +68,8 @@
         count_tag:
           Name: "{{ item.name | default('') }}"
         region: "{{ aws_region }}"
+        aws_access_key: "{{ item.aws_access_key }}"
+        aws_secret_key: "{{ item.aws_secret_key }}"
       with_items: "{{ instances }}"
 
 # We run this task to wait for the newly created hosts
