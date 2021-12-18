@@ -1,0 +1,22 @@
+# Dynamic AWS EC2 inventory plugin to use
+plugin: aws_ec2
+
+# Target only instances in Ireland
+regions:
+  - eu-west-1
+
+# Target only running instances
+filters:
+  "instance-state-name": running
+
+# Ignores 403 errors rather than failing
+strict_permissions: False
+
+# Set hostname from EC2 Name tag
+hostnames:
+  - tag:Name
+
+# Add hosts to tag_Name_Value groups for each Name/Value tag pair
+keyed_groups:
+- prefix: tag
+  key: tags
