@@ -49,8 +49,8 @@
         rules: "{{ item.rules }}"
         rules_egress: "{{ item.rules_egress }}"
         region: "{{ aws_region }}"
-        aws_access_key: "{{ item.aws_access_key }}"
-        aws_secret_key: "{{ item.aws_secret_key }}"
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
       with_items: "{{ security_groups }}"
 
     - name: Provision EC2 instances.
@@ -68,8 +68,8 @@
         count_tag:
           Name: "{{ item.name | default('') }}"
         region: "{{ aws_region }}"
-        aws_access_key: "{{ item.aws_access_key }}"
-        aws_secret_key: "{{ item.aws_secret_key }}"
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
       with_items: "{{ instances }}"
 
 # We run this task to wait for the newly created hosts
