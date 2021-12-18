@@ -14,6 +14,7 @@
     instances:
       - name: webserver-1.test.local
         role: "webserver"
+        group: "webservers"
         security_group: ["default", "webservers"]
 
     # Definition of Security groups
