@@ -69,6 +69,7 @@
         region: "{{ aws_region }}"
         aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
+      register: created_instances
       with_items: "{{ instances }}"
 
     - name: Add EC2 instances to inventory groups.
@@ -82,7 +83,7 @@
       meta: refresh_inventory
 
 # We run this task to wait for the newly created hosts
-- hosts: aws_ec2
+- hosts: aws
   gather_facts: false
 
   tasks:
