@@ -22,7 +22,7 @@ server {
 
     # Logging
     access_log /var/log/nginx/{{ item.server_name }}.log;
-    error_log /var/log/nginx/{{ item.server_name }}-error.log {{ item.error_level }};
+    error_log /var/log/nginx/{{ item.server_name }}-error.log {{ item.error_level | default('warning') }};
 }
 
 # Redirect to https
