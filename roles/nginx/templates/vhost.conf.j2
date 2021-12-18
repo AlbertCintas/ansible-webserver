@@ -1,0 +1,35 @@
+# Main server block
+server {
+    listen {{ item.listen_https | default('443') }} ssl http2 default_server;
+    server_name {{ item.server_name }};
+    root /var/www/{{ item.server_name }};
+    index index.html;
+
+    # SSL
+    ssl_certificate /etc/letsencrypt/live/{{ item.server_name }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ item.server_name }}/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/ssl/ffdhe4096.pem;
+    ssl_protocols TLSv1.3 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    ssl_ecdh_curve secp521r1:secp384r1;
+    ssl_ciphers EECDH+AESGCM:EECDH+AES256;
+    ssl_session_cache shared:TLS:2m;
+    ssl_buffer_size 4k;
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    add_header Strict-Transport-Security 'max-age=31536000; includeSubDomains; preload' always;
+
+    # Logging
+    access_log /var/log/nginx/{{ item.server_name }}.log;
+    error_log /var/log/nginx/{{ item.server_name }}-error.log {{ item.error_level }};
+}
+
+# Redirect to https
+server {
+    listen {{ item.listen_http | default('80') }};
+    if ($host = {{ item.server_name }}) {
+        rewrite ^ https://$host:{{ item.listen_https | default('443') }}$request_uri? permanent;
+    }
+    return 404;
+}

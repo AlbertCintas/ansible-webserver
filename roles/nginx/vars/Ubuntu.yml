@@ -1,0 +1,5 @@
+---
+nginx_user: www-data
+nginx_vhost_path: /etc/nginx/sites-enabled
+nginx_default_vhost: /etc/nginx/sites-enabled/default
+nginx_pid: /run/nginx.pid

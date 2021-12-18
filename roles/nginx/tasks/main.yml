@@ -1,0 +1,24 @@
+---
+# Prepare environment
+- name: Include OS variables.
+  include_vars: "{{ ansible_distribution }}.yml"
+
+# Install Nginx
+- name: Make sure nginx package is present
+  package:
+    name: nginx
+    state: present
+
+# Configure vhosts
+- import_tasks: deploy-vhosts.yml
+
+# Configure Nginx
+- name: Copy nginx config file template
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload nginx

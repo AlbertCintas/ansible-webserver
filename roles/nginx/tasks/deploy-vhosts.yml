@@ -1,0 +1,18 @@
+---
+- name: Remove default nginx vhost
+  file:
+    path: "{{ nginx_default_vhost }}"
+    state: absent
+  notify: reload nginx
+
+- name: Add managed vhost config files.
+  template:
+    src: "vhost.conf.j2"
+    dest: "{{ nginx_vhost_path }}/{{ WEBNAME }}.conf"
+    force: "true"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: reload nginx
+  tags:
+    - skip_ansible_lint

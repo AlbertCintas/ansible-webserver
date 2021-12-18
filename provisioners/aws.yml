@@ -13,8 +13,7 @@
     # Definition of EC2 instances
     instances:
       - name: webserver-1.test.local
-        role: "webserver"
-        group: "webservers"
+        role: "Webserver"
         security_group: ["default", "webservers"]
 
     # Definition of Security groups
@@ -70,23 +69,4 @@
         region: "{{ aws_region }}"
         aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
-      register: created_instances
       with_items: "{{ instances }}"
-
-    - name: Add EC2 instances to inventory groups.
-      add_host:
-        name: "{{ item.1.tagged_instances.0.public_ip }}"
-        groups: "aws,{{ item.1.item.group }},{{ item.1.item.name }}"
-      when: item.1.instances is defined
-      with_indexed_items: "{{ created_instances.results }}"
-
-    - name: Refresh the inventory to grab the new node.
-      meta: refresh_inventory
-
-# We run this task to wait for the newly created hosts
-- hosts: aws
-  gather_facts: false
-
-  tasks:
-    - name: Wait for hosts to become available.
-      wait_for_connection:

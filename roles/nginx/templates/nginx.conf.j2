@@ -1,0 +1,38 @@
+user {{ nginx_user }};
+worker_processes {{ nginx_worker_processes }};;
+pid {{ nginx_pid }};
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+        worker_connections {{ nginx_worker_connections }};
+        multi_accept {{ nginx_multi_accept }};
+}
+
+http {
+
+        # Basic Settings
+        client_max_body_size: {{ nginx_client_max_body_size }};
+        sendfile {{ nginx_sendfile }};
+        tcp_nopush {{ nginx_tcp_nopush }};
+        tcp_nodelay {{ nginx_tcp_nodelay }};
+        keepalive_timeout {{ nginx_keepalive_timeout }};
+        types_hash_max_size {{ nginx_types_hash_max_size }};
+        server_tokens {{ nginx_server_tokens }};
+
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+
+        # SSL Settings
+        ssl_protocols {{ nginx_ssl_protocols }};
+        ssl_prefer_server_ciphers {{ nginx_ssl_prefer_server_ciphers }};
+
+        # Logging Settings
+        access_log {{ nginx_access_log }};
+        error_log {{ nginx_error_log }};
+
+        # Gzip Settings
+        gzip {{ nginx_gzip }};
+
+        # Virtual Host Configs
+        include {{ nginx_vhost_path }}*;
+}

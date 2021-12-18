@@ -12,7 +12,7 @@ filters:
 # Ignores 403 errors rather than failing
 strict_permissions: False
 
-# Set hostname from EC2 Name tag
+# Set inventory hostname from EC2 IP
 hostnames:
   - ip-address
 

@@ -1,0 +1,14 @@
+---
+- name: Install Nginx and deploy git tagged release
+  hosts: tag_Role_Webserver # Use tags on AWS instances and dynamic inventory.
+  vars:
+    nginx_vhosts:
+      - listen_https: 8080
+        server_name: awonderfultestdomain.xyz
+    version: '{{ tower_webhook_event_ref }}'
+  roles:
+   - nginx
+#   - nginx-git-deploy
+  pre_tasks:
+    - name: Wait for newly created hosts to become available.
+      wait_for_connection: # We wait for Ansible connection in case this playbook is run inmediately after an instance has been deployed.
