@@ -35,3 +35,15 @@
   when: item.state|default('present') != 'absent'
   with_items: "{{ nginx_vhosts }}"
   notify: reload nginx
+
+# DNS
+- name: Create A record for new vhosts
+  cloudflare_dns:
+    zone: "{{ item.server_name }}"
+    record: "{{ item.server_name }}"
+    type: A
+    value: "{{ ansible_ssh_host }}"
+    account_email: "{{ cloudflare_email }}"
+    account_api_key: "{{ cloudflare_api_key }}"
+  register: record
+  with_items: "{{ nginx_vhosts }}"
