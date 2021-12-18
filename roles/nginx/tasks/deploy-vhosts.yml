@@ -44,6 +44,6 @@
     record: "{{ item.server_name }}"
     type: A
     value: "{{ ansible_ssh_host }}"
-    api_token: "{{ cloudflare_api_token }}" # From Tower vault
+    account_api_token: "{{ cloudflare_api_token }}" # From Tower vault
   register: record
   with_items: "{{ nginx_vhosts }}"
