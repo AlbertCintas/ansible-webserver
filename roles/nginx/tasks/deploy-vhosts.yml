@@ -1,10 +1,29 @@
 ---
-- name: Remove default nginx vhost
-  file:
-    path: "{{ nginx_default_vhost }}"
-    state: absent
-  notify: reload nginx
+# Create SSL Certificates
+- name: Make sure certbot packages are present
+  package:
+    name:
+      - certbot
+      - python3-certbot-dns-cloudflare
+    state: present
 
+# These credentials are stored in Tower vault and are accessed with variables through an injector
+- name: Create cloudflare credentials file for certbot
+  copy:
+    dest: "/etc/ssl/cloudflare_key"
+    mode: "0600"
+    content: |
+      dns_cloudflare_email = {{ cloudflare_email }}
+      dns_cloudflare_api_key = {{ cloudflare_api_key }}
+
+- name: Create certificates
+  shell: |
+    certbot certonly --dns-cloudflare --dns-cloudflare-credentials /etc/ssl/cloudflare_key \
+    -d "{{ item.server_name }}" --non-interactive \
+    --agree-tos -m "{{ item.admin_email | default('acintasv@gmail.com') }}"
+  with_items: "{{ nginx_vhosts }}"
+
+# Create defined Vhosts
 - name: Add managed vhost config files.
   template:
     src: "vhost.conf.j2"

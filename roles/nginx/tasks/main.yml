@@ -22,3 +22,9 @@
     mode: 0644
   notify:
     - reload nginx
+
+- name: Remove default nginx vhost
+  file:
+    path: "{{ nginx_default_vhost }}"
+    state: absent
+  notify: reload nginx

@@ -34,5 +34,5 @@ http {
         gzip {{ nginx_gzip }};
 
         # Virtual Host Configs
-        include {{ nginx_vhost_path }}*;
+        include {{ nginx_vhost_path }}/*;
 }
