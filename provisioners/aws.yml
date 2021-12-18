@@ -64,7 +64,6 @@
         exact_count: 1
         count_tag:
           Name: "{{ item.name | default('') }}"
-        profile: "{{ aws_profile }}"
         region: "{{ aws_region }}"
       with_items: "{{ instances }}"
 
