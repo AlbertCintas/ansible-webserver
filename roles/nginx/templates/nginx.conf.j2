@@ -11,7 +11,7 @@ events {
 http {
 
         # Basic Settings
-        client_max_body_size: {{ nginx_client_max_body_size }};
+        client_max_body_size {{ nginx_client_max_body_size }};
         sendfile {{ nginx_sendfile }};
         tcp_nopush {{ nginx_tcp_nopush }};
         tcp_nodelay {{ nginx_tcp_nodelay }};
