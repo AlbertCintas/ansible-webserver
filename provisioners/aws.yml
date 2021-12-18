@@ -1,0 +1,78 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  # Setting Up Variables
+  vars:
+    aws_profile: default
+    aws_region: eu-west-1 # Ireland
+    aws_ec2_ami: ami-0c0a42948ea1b4f44 # Ubuntu 20.04 LTS
+
+    # Definition of EC2 instances
+    instances:
+      - name: webserver-1.test.local
+        role: "webserver"
+        group: "webservers"
+        security_group: ["default", "webservers"]
+
+    # Definition of Security groups
+    security_groups:
+      - name: webservers
+        rules:
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 443
+            to_port: 443
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 8080
+            to_port: 8080
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 0.0.0.0/0
+        rules_egress: []
+
+  # Deploy tasks
+  tasks:
+    - name: Configure EC2 Security Groups.
+      ec2_group:
+        name: "{{ item.name }}"
+        description: Security group for Webservers.
+        state: present
+        rules: "{{ item.rules }}"
+        rules_egress: "{{ item.rules_egress }}"
+        profile: "{{ aws_profile }}"
+        region: "{{ aws_region }}"
+      with_items: "{{ security_groups }}"
+
+    - name: Provision EC2 instances.
+      ec2:
+        key_name: "{{ item.ssh_key | default('awx') }}"
+        instance_tags:
+          Name: "{{ item.name | default('') }}"
+          Role: "{{ item.role | default('') }}"
+        group: "{{ item.security_group | default('') }}"
+        instance_type: "{{ item.type | default('t2.micro')}}"
+        image: "{{ aws_ec2_ami }}"
+        wait: yes
+        wait_timeout: 500
+        exact_count: 1
+        count_tag:
+          Name: "{{ item.name | default('') }}"
+        profile: "{{ aws_profile }}"
+        region: "{{ aws_region }}"
+      with_items: "{{ instances }}"
+
+# We run this task to wait for the newly created hosts
+- hosts: aws
+  gather_facts: false
+
+  tasks:
+    - name: Wait for hosts to become available.
+      wait_for_connection:
