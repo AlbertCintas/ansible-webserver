@@ -46,7 +46,6 @@
         state: present
         rules: "{{ item.rules }}"
         rules_egress: "{{ item.rules_egress }}"
-        profile: "{{ aws_profile }}"
         region: "{{ aws_region }}"
       with_items: "{{ security_groups }}"
 
