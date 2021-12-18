@@ -71,8 +71,8 @@
         aws_secret_key: "{{ aws_secret_key }}"
       with_items: "{{ instances }}"
 
-# Refresh the inventory to grab the new node
-- meta: refresh_inventory
+    - name: Refresh the inventory to grab the new node.
+      meta: refresh_inventory
 
 # We run this task to wait for the newly created hosts
 - hosts: aws_ec2
