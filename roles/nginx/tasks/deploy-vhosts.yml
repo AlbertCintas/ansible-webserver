@@ -48,4 +48,5 @@
      --data '{"type":"A","name":"{{ item.website_name }}","content":"{{ ansible_ssh_host }}","ttl":{{ item.cloudflare_ttl | default('360') }},"proxied":false}'
   with_items: "{{ websites }}"
   when: item.state|default('present') != 'absent'
-  warn: false
+  args:
+    warn: false # Ansible wants us to use a module instead of curl
