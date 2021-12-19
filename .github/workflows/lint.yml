@@ -1,6 +1,6 @@
 ---
 name: Yamllint CI
-on:
+'on':
   pull_request:
   push:
     branches:

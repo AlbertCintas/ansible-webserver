@@ -16,8 +16,8 @@
         cf_zone: "1cb53cf7889cb870d8af297cb556d022"
         cf_record: "bda529c48eac4bb0ac30ed84c881d695"
   roles:
-   - nginx
-   - nginx-git-deploy
+    - nginx
+    - nginx-git-deploy
   pre_tasks:
     # We wait for connection in case this playbook is run inmediately after.
     # an instance has been deployed.
