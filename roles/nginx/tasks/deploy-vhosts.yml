@@ -37,13 +37,14 @@
   with_items: "{{ nginx_vhosts }}"
   notify: reload nginx
 
-# DNS
+# Configure DNS records
+# Ansible cloudflare module was failing so we resort to curl
 - name: Create A record for new vhosts
-  cloudflare_dns:
-    zone: "{{ item.server_name }}"
-    record: "{{ item.server_name }}"
-    type: "A"
-    value: "{{ ansible_ssh_host }}"
-    account_email: "{{ cloudflare_email }}" # From Tower vault
-    account_api_token: "{{ cloudflare_api_token }}" # From Tower vault
+  shell: |
+    curl -X PUT "https://api.cloudflare.com/client/v4/zones/9490ee657cc0bf9d8b4ea94503540b86/dns_records" \
+     -H "X-Auth-Email: {{ cloudflare_email }}" \
+     -H "X-Auth-Key: {{ cloudflare_api_key }}" \
+     -H "Content-Type: application/json" \
+     --data '{"type":"A","name":"{{ item.server_name }}","content":"{{ ansible_ssh_host }}","ttl":{},"proxied":false}'
   with_items: "{{ nginx_vhosts }}"
+  
