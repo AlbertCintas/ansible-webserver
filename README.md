@@ -61,5 +61,5 @@ Two GitHub Actions are configured in the repository:
 * In related repository https://github.com/AlbertCintas/my-cv-in-html, another action for deploy is configured. In that repository, an action deploying a release through Tower, using these roles, is configured.
 
 ### Provisioning
-Provisioning has been configured, allowing Ansible to interact with AWS to manage resources. IAM roles can be configured and keys and credentials safely stored and used from the vault to perform many tasks in the cloud. In our case, we are using it to deploy simple EC2 instances and any related security group, to use in our webserver example. More complex scenarios can be achieved with similar simple YAMLs. Not as potent as Terraform, but way easier.
+Provisioning has been configured in the `provisioners` folder, allowing Ansible to interact with AWS to manage resources. IAM roles can be configured and keys and credentials can be safely stored and used from the Tower vault to perform many tasks in the cloud. In our case, we are using it to deploy simple EC2 instances and any related security group, to use in our webserver example. More complex scenarios can be achieved with similar simple YAMLs. Not as potent as Terraform, but way easier.
 
