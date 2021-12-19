@@ -13,7 +13,6 @@ platforms:
   - name: CentOS-8
     image: centos:8
     privileged: true
-    command: /sbin/init
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 provisioner:
