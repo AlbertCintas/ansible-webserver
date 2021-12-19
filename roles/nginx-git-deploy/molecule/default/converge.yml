@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include nginx-git-deploy"
+      include_role:
+        name: "nginx-git-deploy"

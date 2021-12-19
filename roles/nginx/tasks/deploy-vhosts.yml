@@ -8,7 +8,6 @@
     state: present
 
 # These credentials are stored in Tower vault and are accessed with variables through an injector
-# API key deprecated. Using for simplification because of old repository packages.
 - name: Create cloudflare credentials file for certbot
   copy:
     dest: "/etc/ssl/cloudflare_key"
