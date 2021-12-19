@@ -42,9 +42,7 @@
 - name: Create A record for new vhosts
   shell: |
     curl -X PUT "https://api.cloudflare.com/client/v4/zones/9490ee657cc0bf9d8b4ea94503540b86/dns_records" \
-     -H "X-Auth-Email: {{ cloudflare_email }}" \
-     -H "X-Auth-Key: {{ cloudflare_api_key }}" \
+     -H "Authorization: Bearer {{ cloudflare_api_token }}" \
      -H "Content-Type: application/json" \
      --data '{"type":"A","name":"{{ item.server_name }}","content":"{{ ansible_ssh_host }}","ttl":{},"proxied":false}'
   with_items: "{{ nginx_vhosts }}"
-  
