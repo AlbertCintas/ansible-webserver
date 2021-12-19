@@ -8,6 +8,12 @@ This repository contains Ansible roles to deploy an Nginx webserver along a list
 The pipeline contains a mix of Ansible playbooks, Ansible Tower and Github Actions.
 A live instance of Ansible Tower is currently running in a Kubernetes in OVH Cloud, using this repository as project backend, so these playbooks can be live tested, along the related actions.
 
+The roles (and helpers) allow to:
+* Provision EC2 instances on AWS and store the hosts into a dynamic inventory.
+* Install and configure Nginx on Debian/RedHat based hosts.
+* Configure one or several vhosts in Nginx, including the creation of SSL certificates and automatic registry od DNS entries in CloudFlare.
+* Deploy a website for each configured vhost from a github tagged release. Deploys triggered by webhooks in Tower, called from Github.
+
 A quick description of the repo:
 ````
 ansible-webserver
@@ -28,6 +34,7 @@ ansible-webserver
 
 
 ````
+> :warning: This repository is just a way of quickly showcasing some abilities and way of thinking on the basis of a requested task. In no way this is intended to be any kind of productive pipeline design or suggestion. Many things have been done having best practices on mind, while in many other parts corners have been cut for the sake of simplicity or were made just for showoff while having not much sense (ie. provisioning from a deploy pipeline).
 
 ### Roles
 There are two roles in the repository:
@@ -37,10 +44,10 @@ There are two roles in the repository:
 These roles work for Linux distributions based on Debian or RedHat, through the use of OS-dependend variables located in each role `vars` folder.
 
 ### Inventory
-A dynamic inventory connected to AWS cloud has been configured. With current configuration, each time a job is run, a permissionless IAM user configured in Tower checks for the latest status of available hosts. The tags on the EC2 instances in AWS are automatically tied to Ansible groups, for easy inventory.
+A dynamic inventory connected to AWS cloud has been configured in `inventories`. With current configuration, each time a job is run, a permissionless IAM user configured in Tower, checks for the latest status of available hosts in AWS and updates local inventory. The tags on the EC2 instances in AWS are automatically tied to Ansible groups.
 
 ### Secrets
-Along the playbooks in the repository you might find some variables not defined anywhere. These secrets are stored encrypted in the Ansible Tower vault. The secrets are safely stored and can be very easily accessed through a Jinja variable using custom secrets and quickly configurable injectors.
+Along the playbooks in the repository you might find some variables not defined anywhere. These secrets are stored encrypted in the Ansible Tower vault. The secrets are safely stored and can be very easily accessed through a Jinja variable using custom secrets and quickly configurable injectors. SSH keys, or AWS IAM and Cloudflare credentials are stored and shared in this way.
 
 ### Actions / CI
 Two Github Actions are configured in the repository:
