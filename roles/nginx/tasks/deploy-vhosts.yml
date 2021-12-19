@@ -51,7 +51,7 @@
               "name":"{{ item.website_name }}",\
               "content":"{{ ansible_ssh_host }}",\
               "ttl":{{ item.cloudflare_ttl | default('360') }},\
-              "proxied":false}'\
+              "proxied":false}'
   with_items: "{{ websites }}"
   when: item.state|default('present') != 'absent'
   args:
