@@ -1,14 +1,19 @@
 ---
-- name: Install Nginx and deploy git tagged release
-  hosts: tag_Role_Webserver # Use tags on AWS instances and dynamic inventory.
+- name: Install Nginx and deploy a list of websites from Github
+  hosts: tag_Role_Webserver # Use dynamic inventory and tags from AWS instances.
   vars:
-    nginx_vhosts:
+    # A list of websites to be configured/deployed can be defined below.
+    # If no websites are defined, the playbook just installs and configures Nginx.
+    websites:
       - listen_https: 8080
-        server_name: awonderfultestdomain.xyz
+        website_name: awonderfultestdomain.xyz
+        # Cloudflare API vars for DNS records
+        cloudflare_zone: 1cb53cf7889cb870d8af297cb556d022
+        cloudflare_record: bda529c48eac4bb0ac30ed84c881d695
     version: '{{ tower_webhook_event_ref }}'
   roles:
    - nginx
 #   - nginx-git-deploy
   pre_tasks:
     - name: Wait for newly created hosts to become available.
-      wait_for_connection: # We wait for Ansible connection in case this playbook is run inmediately after an instance has been deployed.
+      wait_for_connection: # We wait for Ansible to hosts connection in case this playbook is run inmediately after an instance has been deployed.

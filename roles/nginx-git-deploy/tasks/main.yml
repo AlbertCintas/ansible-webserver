@@ -4,15 +4,15 @@
 - name: Checkout git repository
   git:
     repo: 'git@github.com:{{ web_repository }}'
-    dest: /var/www/{{ nginx_vhosts.server_name }}
+    dest: /var/www/{{ websites.website_name }}
     version: {{ version }}
     accept_hostkey: yes
     force: yes
-    key_file: /home/{{ nginx_user }}/.ssh/id_rsa_{{ nginx_vhosts.server_name }}
+    key_file: /home/{{ nginx_user }}/.ssh/id_rsa_{{ websites.website_name }}
       
 - name: Chown web folder
   file:
-    path: /var/www/{{ nginx_vhosts.server_name }}
+    path: /var/www/{{ websites.website_name }}
     owner: {{ nginx_user }}
     group: {{ nginx_user }}
     recurse: yes

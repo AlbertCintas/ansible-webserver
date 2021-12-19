@@ -20,29 +20,32 @@
 - name: Create certificates
   shell: |
     certbot certonly --dns-cloudflare --dns-cloudflare-credentials /etc/ssl/cloudflare_key \
-    -d "{{ item.server_name }}" --non-interactive \
+    -d "{{ item.website_name }}" --non-interactive \
     --agree-tos -m "{{ item.admin_email | default('acintasv@gmail.com') }}"
-  with_items: "{{ nginx_vhosts }}"
+  with_items: "{{ websites }}"
+  when: item.state|default('present') != 'absent'
 
 # Create defined Vhosts
 - name: Add managed vhost config files.
   template:
     src: "vhost.conf.j2"
-    dest: "{{ nginx_vhost_path }}/{{ item.server_name }}.conf"
+    dest: "{{ nginx_vhost_path }}/{{ item.website_name }}.conf"
     force: "true"
     owner: "root"
     group: "root"
     mode: "0644"
+  with_items: "{{ websites }}"
   when: item.state|default('present') != 'absent'
-  with_items: "{{ nginx_vhosts }}"
   notify: reload nginx
 
 # Configure DNS records
-# Ansible cloudflare module was failing so we resort to curl
-- name: Create A record for new vhosts
+- name: Update A record for new vhosts
   shell: |
-    curl -X PUT "https://api.cloudflare.com/client/v4/zones/9490ee657cc0bf9d8b4ea94503540b86/dns_records" \
-     -H "Authorization: Bearer {{ cloudflare_api_token }}" \
+    curl -X PUT "https://api.cloudflare.com/client/v4/zones/{{ item.cloudflare_zone }}/dns_records/{{ item.cloudflare_record }}" \
+     -H "X-Auth-Email: {{ cloudflare_email }}" \
+     -H "X-Auth-Key: {{ cloudflare_api_key }}" \
      -H "Content-Type: application/json" \
-     --data '{"type":"A","name":"{{ item.server_name }}","content":"{{ ansible_ssh_host }}","ttl":{},"proxied":false}'
-  with_items: "{{ nginx_vhosts }}"
+     --data '{"type":"A","name":"{{ item.website_name }}","content":"{{ ansible_ssh_host }}","ttl":{{ item.cloudflare_ttl | default('360') }},"proxied":false}'
+  with_items: "{{ websites }}"
+  when: item.state|default('present') != 'absent'
+  warn: false
