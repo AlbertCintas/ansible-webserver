@@ -13,6 +13,7 @@ The roles (and helpers) allow to:
 * Install and configure Nginx on Debian/RedHat based distros. Extra distros can be added with minimal effort.
 * Configure one or several vhosts in Nginx, including the creation of SSL certificates and automatic registry of DNS entries using the Cloudflare API.
 * Deploy a website for each configured vhost from a GitHub tagged release. Deploys triggered by webhooks in Tower, triggered by a release publication.
+
 The result of these steps: https://awonderfultestdomain.xyz:8080/
 
 A quick description of the repo:
