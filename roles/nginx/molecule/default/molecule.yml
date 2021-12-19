@@ -7,7 +7,6 @@ platforms:
   - name: Ubuntu-Latest
     image: ubuntu:latest
     privileged: true
-    command: /sbin/init
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
   - name: CentOS-8
