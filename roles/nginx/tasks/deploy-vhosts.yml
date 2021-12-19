@@ -43,7 +43,7 @@
 - name: Update A record for new vhosts
   shell: |
     URL="{{ cf_url }}/{{ item.cf_zone }}/dns_records/{{ item.cf_record }}"
-    curl -X PUT $URL \
+    curl -X PUT "$URL" \
      -H "X-Auth-Email: {{ cloudflare_email }}" \
      -H "X-Auth-Key: {{ cloudflare_api_key }}" \
      -H "Content-Type: application/json" \
