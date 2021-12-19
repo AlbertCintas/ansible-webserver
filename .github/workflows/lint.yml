@@ -1,5 +1,5 @@
 ---
-name: Lint YAMLs
+name: Yamllint CI
 on:
   pull_request:
   push:
