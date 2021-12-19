@@ -1,7 +1,7 @@
 # Main server block
 server {
     listen {{ item.listen_https | default('443') }} ssl http2 default_server;
-    website_name {{ item.website_name }};
+    server_name {{ item.website_name }};
     root /var/www/{{ item.website_name }};
     index index.html;
 
