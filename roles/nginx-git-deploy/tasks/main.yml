@@ -1,4 +1,9 @@
 ---
+# Prepare environment
+- name: Include OS variables.
+  include_vars: "{{ ansible_distribution }}.yml"
+
+# Deploy
 - name: Checkout git repository for website
   git:
     repo: "{{ item.git_repo }}"

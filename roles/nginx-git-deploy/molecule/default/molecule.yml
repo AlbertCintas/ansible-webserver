@@ -4,13 +4,9 @@ dependency:
 driver:
   name: docker
 platforms:
+  # For the sake of simplicity we test only on Ubuntu
   - name: Ubuntu-Latest
     image: ubuntu:latest
-    privileged: true
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-  - name: CentOS-8
-    image: centos:8
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro

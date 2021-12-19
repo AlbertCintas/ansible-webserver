@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
   vars:
-    # For the sake of simplicity we use the main vars for testing
+    # For the sake of simplicity we use the main example vars for testing
     websites:
       - listen_https: 8080
         website_name: "awonderfultestdomain.xyz"
@@ -14,3 +14,8 @@
     - name: "Include nginx-git-deploy"
       include_role:
         name: "nginx-git-deploy"
+  pre_tasks:
+    - name: Install git.
+      apt: name=git state=present update_cache=yes
+      when: ansible_os_family == 'Debian'
+      changed_when: false
