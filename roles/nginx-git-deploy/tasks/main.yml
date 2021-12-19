@@ -4,7 +4,7 @@
     repo: "{{ item.git_repo }}"
     dest: "/var/www/{{ item.website_name }}"
     version: "{{ item.git_tag | default('main') }}"
-    force: yes
+    force: true
   with_items: "{{ websites }}"
   when: item.state|default('present') != 'absent'
 
@@ -13,6 +13,6 @@
     path: "/var/www/{{ item.website_name }}"
     owner: "{{ nginx_user }}"
     group: "{{ nginx_user }}"
-    recurse: yes
+    recurse: true
   with_items: "{{ websites }}"
   when: item.state|default('present') != 'absent'

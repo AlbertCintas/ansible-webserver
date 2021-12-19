@@ -1,3 +1,4 @@
+---
 # Dynamic AWS EC2 inventory plugin to use
 plugin: aws_ec2
 
@@ -10,7 +11,7 @@ filters:
   "instance-state-name": running
 
 # Ignores 403 errors rather than failing
-strict_permissions: False
+strict_permissions: false
 
 # Set inventory hostname from EC2 IP
 hostnames:
@@ -18,5 +19,5 @@ hostnames:
 
 # Add hosts to tag_Name_Value groups for each Name/Value tag pair
 keyed_groups:
-- prefix: tag
-  key: tags
+  - prefix: tag
+    key: tags

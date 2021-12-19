@@ -7,7 +7,8 @@
       - python3-certbot-dns-cloudflare
     state: present
 
-# These credentials are stored in Tower vault and are accessed with variables through an injector
+# These credentials are stored in Tower vault.
+# Credentials are accessed with variables through an injector
 - name: Create cloudflare credentials file for certbot
   copy:
     dest: "/etc/ssl/cloudflare_key"
@@ -18,7 +19,8 @@
 
 - name: Create certificates
   shell: |
-    certbot certonly --dns-cloudflare --dns-cloudflare-credentials /etc/ssl/cloudflare_key \
+    certbot certonly --dns-cloudflare \
+    --dns-cloudflare-credentials /etc/ssl/cloudflare_key \
     -d "{{ item.website_name }}" --non-interactive \
     --agree-tos -m "{{ item.admin_email | default('acintasv@gmail.com') }}"
   with_items: "{{ websites }}"
@@ -40,12 +42,18 @@
 # Configure DNS records
 - name: Update A record for new vhosts
   shell: |
-    curl -X PUT "https://api.cloudflare.com/client/v4/zones/{{ item.cloudflare_zone }}/dns_records/{{ item.cloudflare_record }}" \
+    URL="{{ cf_url }}/{{ item.cf_zone }}/dns_records/{{ item.cf_record }}"
+    curl -X PUT $URL \
      -H "X-Auth-Email: {{ cloudflare_email }}" \
      -H "X-Auth-Key: {{ cloudflare_api_key }}" \
      -H "Content-Type: application/json" \
-     --data '{"type":"A","name":"{{ item.website_name }}","content":"{{ ansible_ssh_host }}","ttl":{{ item.cloudflare_ttl | default('360') }},"proxied":false}'
+     --data '{"type":"A",\
+              "name":"{{ item.website_name }}",\
+              "content":"{{ ansible_ssh_host }}",\
+              "ttl":{{ item.cloudflare_ttl | default('360') }},\
+              "proxied":false}'\
   with_items: "{{ websites }}"
   when: item.state|default('present') != 'absent'
   args:
-    warn: false # Ansible wants us to use a module instead of curl
+    # Ansible wants us to use a module instead of curl
+    warn: false

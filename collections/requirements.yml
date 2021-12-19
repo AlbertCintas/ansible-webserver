@@ -1,3 +1,4 @@
+---
 # Required for Tower dynamic EC2 inventory
 collections:
   - name: amazon.aws

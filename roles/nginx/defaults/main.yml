@@ -15,3 +15,6 @@ nginx_access_log: "/var/log/nginx/access.log"
 nginx_ssl_protocols: "TLSv1 TLSv1.1 TLSv1.2 TLSv1.3"
 nginx_ssl_prefer_server_ciphers: "on"
 nginx_gzip: "on"
+
+# Cloudflare API
+cf_url: "https://api.cloudflare.com/client/v4/zones"
