@@ -3,6 +3,12 @@
 - name: Include OS variables.
   include_vars: "{{ ansible_distribution }}.yml"
 
+# Update apt cache on Debian based distros
+- name: Update apt cache.
+  apt: update_cache=yes
+  when: ansible_os_family == 'Debian'
+  changed_when: false
+
 # Install Nginx
 - name: Make sure nginx package is present
   package:
