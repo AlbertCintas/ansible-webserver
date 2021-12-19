@@ -1,6 +1,15 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    # For the sake of simplicity we use the main vars for testing
+    websites:
+      - listen_https: 8080
+        website_name: "awonderfultestdomain.xyz"
+        git_repo: "https://github.com/AlbertCintas/my-cv-in-html.git"
+        git_tag: "{{ tower_webhook_event_ref | default('main') }}"
+        cf_zone: "1cb53cf7889cb870d8af297cb556d022"
+        cf_record: "bda529c48eac4bb0ac30ed84c881d695"
   tasks:
     - name: "Include nginx"
       include_role:

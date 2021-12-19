@@ -6,9 +6,17 @@ driver:
 platforms:
   - name: Ubuntu-Latest
     image: ubuntu:latest
-  - name: CentOS-7
-    image: centos:7
+    privileged: true
+    command: /sbin/init
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  - name: CentOS-8
+    image: centos:8
+    privileged: true
+    command: /sbin/init
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
 provisioner:
   name: ansible
-verifier:
-  name: ansible
+  playbooks:
+    converge: ${MOLECULE_PLAYBOOK:-converge.yml}
