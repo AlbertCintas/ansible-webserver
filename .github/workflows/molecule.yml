@@ -13,8 +13,9 @@ jobs:
     strategy:
       matrix:
         distro:
-          - centos8
           - ubuntu2004
+          # Other distros can be added here
+          #- centos8
 
     steps:
       - name: Check out the codebase.
