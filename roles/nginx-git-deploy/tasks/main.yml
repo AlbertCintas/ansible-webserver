@@ -12,6 +12,7 @@
     force: true
   with_items: "{{ websites }}"
   when: item.state|default('present') != 'absent'
+  register: git_change
 
 - name: Chown web folder
   file:
@@ -20,4 +21,4 @@
     group: "{{ nginx_user }}"
     recurse: true
   with_items: "{{ websites }}"
-  when: item.state|default('present') != 'absent'
+  when: git_change.changed
