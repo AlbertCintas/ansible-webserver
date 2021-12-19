@@ -1,5 +1,5 @@
 ---
-name: Molecule Nginx
+name: Molecule CI
 'on':
   pull_request:
   push:
