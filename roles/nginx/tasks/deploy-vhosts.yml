@@ -43,7 +43,7 @@
 # Configure DNS records
 - name: Update A record for new vhosts
   shell: |
-    curl -X PUT "https://api.cloudflare.com/client/v4/zones/{{ item.cloudflare_zone }}/dns_records/{{ item.cloudflare_record }}" \
+    curl -X PUT "https://api.cloudflare.com/client/v4/zones/{{ item.cf_zone }}/dns_records/{{ item.cf_record }}" \
      -H "X-Auth-Email: {{ cloudflare_email }}" \
      -H "X-Auth-Key: {{ cloudflare_api_key }}" \
      -H "Content-Type: application/json" \
