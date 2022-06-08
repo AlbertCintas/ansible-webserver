@@ -6,7 +6,7 @@
 ### Summary
 This repository contains Ansible roles to provision servers, deploy in them Nginx along a list of vhosts (server blocks) and deploy their web content from a GitHub repository.
 The pipeline contains a mix of Ansible playbooks, Ansible Tower and GitHub Actions.
-A live instance of Ansible Tower has been deployed, using this repository as project backend, so these playbooks can be live tested, along the related actions.
+~~A live instance of Ansible Tower has been deployed, using this repository as project backend, so these playbooks can be live tested, along the related actions~~ (Not available anymore).
 
 The roles (and helpers) allow to:
 * Provision EC2 instances on AWS and manage the hosts using a dynamic inventory.
@@ -14,7 +14,7 @@ The roles (and helpers) allow to:
 * Configure one or several vhosts in Nginx, including the creation of SSL certificates and automatic registry of DNS entries using the Cloudflare API.
 * Deploy a website for each configured vhost from a GitHub tagged release. Deploys triggered by webhooks in Tower, triggered by a release publication.
 
-The result of these steps: https://awonderfultestdomain.xyz:8080/
+~~The result of these steps: https://awonderfultestdomain.xyz:8080/~~ (Not available anymore)
 
 A quick description of the repo:
 ````
@@ -46,7 +46,7 @@ There are two roles in the repository:
 These roles work for Linux distributions based on Debian or RedHat, through the use of OS-dependent variables located in each role's `vars` folder.
 
 ### Ansible Tower
-These roles and pipelines have been configured with Ansible Tower in mind. An Ansible AWX instance has been deployed using Ansible in a Kubernetes cluster in OVH Cloud. It is currently listening for webhook requests and repository or inventory updates, using these playbooks and configurations. All configurations are stored in the repository, except for credentials and secrets, which are stored in Tower vault. More info: https://github.com/ansible/awx-operator
+These roles and pipelines have been configured with Ansible Tower in mind. An Ansible AWX instance has been deployed in the Cloud. It is currently listening for webhook requests and repository or inventory updates, using these playbooks and configurations. All configurations are stored in the repository, except for credentials and secrets, which are stored in Tower vault.
 
 ### Inventory
 A dynamic inventory connected to AWS cloud has been configured in `inventories`. With current configuration, each time a job is run, a permission-less IAM user configured in Tower checks for the latest status of available ec2 instances and updates local inventory. The tags on the EC2 instances in AWS are automatically tied to Ansible groups locally, allowing for great flexibility.
@@ -61,5 +61,5 @@ Two GitHub Actions are configured in the repository:
 * In related repository https://github.com/AlbertCintas/my-cv-in-html, another action for deploy is configured. In that repository, an action deploying a release through Tower, using these roles, is configured.
 
 ### Provisioning
-Provisioning has been configured in the `provisioners` folder, allowing Ansible to interact with AWS to manage resources. IAM roles can be configured and keys and credentials can be safely stored and used from the Tower vault to perform many tasks in the cloud. In our case, we are using it to deploy simple EC2 instances and any related security group, to use in our webserver example. More complex scenarios can be achieved with similar simple YAMLs. Not as potent as Terraform, but way easier.
+Provisioning has been configured in the `provisioners` folder, allowing Ansible to interact with AWS to manage resources. IAM roles can be configured and keys and credentials can be safely stored and used from the Tower vault to perform many tasks in the cloud. In our case, we are using it to deploy simple EC2 instances and any related security group, to use in our webserver example. More complex scenarios can be achieved with similar simple YAMLs.
 
